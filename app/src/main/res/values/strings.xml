@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Ghi_Chu</string>
+    <string name="KEY_TEXT_EMAIL">Account :</string>
+    <string name="KEY_TEXT_EMAIL2">Password :\n</string>
+    <string name="KEY_TEXT_DANGNHAP">Đăng Nhập\n</string>
+    <string name="KEY_TEXT_QUENMK">Quên mật khẩu ?</string>
+</resources>
