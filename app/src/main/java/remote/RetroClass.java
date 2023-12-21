@@ -27,7 +27,26 @@ public class RetroClass {
     {
         return getRetroInstance().create(APIService.class);
     }
+//
 
+    private static Retrofit retrofit;
 
+    public interface OnBaseUrlFetchedListener {
+        void onBaseUrlFetched(String baseUrl);
+    }
+
+    public static void getAPIService(OnBaseUrlFetchedListener listener) {
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+
+        // Notify the listener with the BASE_URL
+        if (listener != null) {
+            listener.onBaseUrlFetched(BASE_URL);
+        }
+    }
 
 }

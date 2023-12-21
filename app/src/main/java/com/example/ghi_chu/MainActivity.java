@@ -13,6 +13,8 @@ import java.util.List;
 
 import model.StudentModel;
 import model.StudentResponse;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import remote.APIService;
 import remote.RetroClass;
 import retrofit2.Call;
@@ -36,6 +38,13 @@ public class MainActivity extends AppCompatActivity {
         txbPass = findViewById(R.id.txb_Password);
         btnLogin = findViewById(R.id.btn_Login);
 
+        RetroClass.getAPIService(new RetroClass.OnBaseUrlFetchedListener() {
+            @Override
+            public void onBaseUrlFetched(String baseUrl) {
+                // Xử lý baseUrl, ví dụ: hiển thị qua Toast
+                showToast("BASE_URL: " + baseUrl, Toast.LENGTH_LONG);
+            }
+        });
 
            btnLogin.setOnClickListener(new View.OnClickListener() {
              @Override
@@ -103,14 +112,50 @@ public class MainActivity extends AppCompatActivity {
 //        });
 //    }
 
+//    public void callData(String username, String password) {
+//            APIService apiService = RetroClass.getAPIService();
+//            Call<StudentModel> call = apiService.checkLogin(username, password);
+//            call.enqueue(new Callback<StudentModel>() {
+//                @Override
+//                public void onResponse(Call<StudentModel> call, Response<StudentModel> response) {
+//                    if (response.isSuccessful()) {
+//                        // Phản hồi thành công từ server
+//                        showToast("Status Code: " + response.code(), Toast.LENGTH_LONG);
+//                        showToast("Kết nối thành công!", Toast.LENGTH_LONG);
+//                    } else {
+//                        // Phản hồi thất bại từ server
+//                        showToast("Kết nối thất bại! Mã lỗi: " + response.code(), Toast.LENGTH_LONG);
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<StudentModel> call, Throwable t) {
+//                    // Xử lý khi có lỗi
+//                    showToast("Kết nối thất bại!", Toast.LENGTH_LONG);
+//                }
+//            });
+//    }
+
     public void callData(String username, String password) {
         APIService apiService = RetroClass.getAPIService();
-        Call<StudentModel> call = apiService.checkLogin(username, password);
+        // Tạo một RequestBody chứa dữ liệu cần gửi đi
+        RequestBody requestBody = new FormBody.Builder()
+                .add("name", username)
+                .add("password", password)
+                .build();
+
+        Call<StudentModel> call = apiService.checkLogin(requestBody);
         call.enqueue(new Callback<StudentModel>() {
             @Override
             public void onResponse(Call<StudentModel> call, Response<StudentModel> response) {
-                // Xử lý phản hồi từ server
-                showToast("Kết nối thành công!", Toast.LENGTH_LONG);
+                if (response.isSuccessful()) {
+                    // Phản hồi thành công từ server
+                    showToast("Status Code: " + response.code(), Toast.LENGTH_LONG);
+                    showToast("Kết nối thành công!", Toast.LENGTH_LONG);
+                } else {
+                    // Phản hồi thất bại từ server
+                    showToast("Kết nối thất bại! Mã lỗi: " + response.code(), Toast.LENGTH_LONG);
+                }
             }
 
             @Override

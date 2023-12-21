@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 
 import model.StudentAdd;
 import model.StudentModel;
+import okhttp3.RequestBody;
 import retrofit2.http.Body;
 
 import retrofit2.http.Field;
@@ -31,9 +32,16 @@ public interface APIService {
 
     @GET("app/checkLogin")
     Call<StudentModel> checkLogin(
-            @Query("name") String username,
-            @Query("password") String password
+                    @Query("name") String username,
+                    @Query("password") String password
+            );
+
+    @POST("app/checkLogin")
+    Call<StudentModel> checkLogin(
+            @Body RequestBody requestBody
     );
+
+
 
 
 
